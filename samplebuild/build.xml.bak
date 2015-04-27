@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Ant application" default="execute" basedir=".">
+
+<property name="dir.src" value="./src"/>
+<property name="dir.build" value="./build"/>
+<property name="dir.dest" value="./dest"/>
+<property name="dir.lib" value="./lib"/>
+
+ <path id="resource">
+<fileset dir="resources">
+<include name="*.properties"/>
+</fileset>
+</path>
+
+
+<target name="clean" description="Removing the all generated files.">
+
+<delete dir="${dir.build}"/>
+<delete dir="${dir.dest}" />
+</target>
+
+<target name="prepare" depends="clean">
+<mkdir dir="${dir.build}"/>
+<mkdir dir="${dir.dest}/resources"/>
+ <copy todir="${dir.dest}/resources">     <fileset dir="./resources"/>  </copy> 
+ <copy todir="${dir.dest}/lib">     <fileset dir="./lib"/>  </copy> 
+</target>
+
+<target name="compile" depends="prepare" description="Compilation of all source code.">
+<javac srcdir="${dir.src}" destdir="${dir.build}">
+<classpath>
+	<fileset dir="${dir.lib}">
+	<include name="*.jar" />
+	</fileset>
+</classpath>	
+</javac>
+</target>
+<target name="jar" depends="compile" description="Generates.jar file in to the 'dest' directory.">
+<jar jarfile="${dir.dest}/Build_Automation.jar" basedir="${dir.build}">
+<zipgroupfileset dir="${dir.lib}" includes="**/*.jar"/>
+<fileset dir="./resources" includes="**/*.properties"/>
+<fileset dir="${dir.lib}" includes="**/*.jar" />
+
+<manifest> 
+            <attribute name="Main-Class" value="com.Build_Automation"/> 
+			<attribute name="Class-Path"  value="${dir.lib}/mysql-connector-java-5.1.2.jar"/>
+        </manifest>
+<!-- <path refid="resource"/> -->
+</jar>
+
+</target>
+  
+
+
+
+ <target name="execute" depends="jar" description="run the project">
+     <exec executable="jar"/>
+      <java jar="${dir.dest}/Build_Automation.jar" fork="true" /> 
+      
+  </target>
+
+
+
+
+</project>
