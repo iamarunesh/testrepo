@@ -89,6 +89,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 </plugins>
 </build>
 		
-  
+  <distributionManagement>
+  <repository>
+    <id>test</id>
+    <url>http://localhost:8081/nexus/content/repositories/test</url>
+  </repository>
+</distributionManagement>
 	
 </project>
